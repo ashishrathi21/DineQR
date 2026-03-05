@@ -1,0 +1,23 @@
+
+@import "tailwindcss";
+
+@keyframes scan-slow {
+  0% { top: 15%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 85%; opacity: 0; }
+}
+
+@keyframes progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-scan-slow {
+  animation: scan-slow 3s ease-in-out infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
