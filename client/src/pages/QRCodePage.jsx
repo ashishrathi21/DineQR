@@ -8,7 +8,7 @@ const QRCodePage = () => {
   const { user } = useAuthStore();
   const [selectedTable, setSelectedTable] = useState("1");
 
-  // Safe extraction of restaurant fields (handling populated vs non-populated schema)
+  // Safe extraction of restaurant fields
   const restaurantId = user?.restaurantId?._id || (typeof user?.restaurantId === 'string' ? user?.restaurantId : undefined);
   const restaurantName = user?.restaurantId?.name || "Our Restaurant";
   const subscriptionPlan = user?.restaurantId?.subscriptionPlan || "Starter";
@@ -17,7 +17,7 @@ const QRCodePage = () => {
   const maxStarterTables = 10;
   const isStarter = subscriptionPlan === "Starter";
 
-  // URL pointing to the customer-facing menu (pre-populated with table number)
+  // URL pointing to the customer-facing menu
   const menuUrl = `${window.location.origin}/restaurant/${restaurantId}/menu${selectedTable ? `?table=${selectedTable}` : ''}`;
 
   const downloadQR = () => {
@@ -49,7 +49,7 @@ const QRCodePage = () => {
         ctx.fillText(restaurantName, canvas.width / 2, img.height + 80);
         
         ctx.fillStyle = "#f97316";
-        ctx.font = "black 32px Inter, sans-serif";
+        ctx.font = "bold 32px Inter, sans-serif";
         ctx.fillText(`TABLE ${selectedTable || 'N/A'}`, canvas.width / 2, img.height + 125);
         
         const pngFile = canvas.toDataURL("image/png");
