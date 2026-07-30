@@ -22,7 +22,7 @@ export const useCartStore = create((set, get) => ({
     return { cart: state.cart.filter((c) => c._id !== itemId) };
   }),
 
-  clearCart: () => set({ cart: [], tableNumber: '' }),
+  clearCart: () => set({ cart: [] }),
 
   getCartTotal: () => {
     return get().cart.reduce((total, item) => total + (item.price * item.quantity), 0);

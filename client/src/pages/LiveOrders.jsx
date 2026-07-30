@@ -5,7 +5,8 @@ import { toast, Toaster } from 'react-hot-toast';
 import { Clock, CheckCircle, ChefHat, Check } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/order";
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = rawApiUrl.endsWith("/order") ? rawApiUrl : `${rawApiUrl.replace(/\/$/, '')}/order`;
 axios.defaults.withCredentials = true;
 
 const LiveOrders = () => {

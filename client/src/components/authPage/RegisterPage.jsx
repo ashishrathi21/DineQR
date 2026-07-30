@@ -28,6 +28,12 @@ const RegisterPage = ({ setIsLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setValidationError('');
+
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+    if (!gmailRegex.test(formData.email)) {
+      setValidationError("Only valid @gmail.com email addresses are allowed for registration.");
+      return;
+    }
     
     if (formData.password !== formData.confirmPassword) {
       setValidationError("Passwords do not match");
@@ -66,6 +72,11 @@ const RegisterPage = ({ setIsLogin }) => {
                 const res = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`);
                 const payload = await res.json();
 
+                if (!payload.email || !payload.email.toLowerCase().endsWith("@gmail.com")) {
+                  setValidationError("Only valid @gmail.com Google accounts are allowed.");
+                  return;
+                }
+
                 const success = await googleLogin({
                   name: payload.name,
                   email: payload.email,
@@ -78,7 +89,7 @@ const RegisterPage = ({ setIsLogin }) => {
                 }
               } catch (err) {
                 console.error("Failed to fetch Google profile:", err);
-                toast.error("Failed to authenticate with Google.");
+                setValidationError("Failed to authenticate with Google.");
               }
             }
           },

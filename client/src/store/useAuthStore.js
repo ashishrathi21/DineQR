@@ -14,20 +14,27 @@ if (initialToken) {
 
 export const useAuthStore = create((set) => ({
   user: null,
-  isAuthenticated: false,
+  isAuthenticated: !!initialToken,
   isLoading: false,
+  isCheckingAuth: !!initialToken,
   error: null,
 
   // Check if user is logged in
   verifyAuth: async () => {
-    set({ isLoading: true, error: null });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      delete axios.defaults.headers.common["Authorization"];
+      set({ user: null, isAuthenticated: false, isCheckingAuth: false });
+      return;
+    }
+    set({ isCheckingAuth: true, error: null });
     try {
       const response = await axios.get(`${AUTH_API_URL}/me`);
-      set({ user: response.data.user, isAuthenticated: true, isLoading: false });
+      set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false });
     } catch (error) {
       localStorage.removeItem("token");
       delete axios.defaults.headers.common["Authorization"];
-      set({ user: null, isAuthenticated: false, isLoading: false });
+      set({ user: null, isAuthenticated: false, isCheckingAuth: false });
     }
   },
 
@@ -95,6 +102,21 @@ export const useAuthStore = create((set) => ({
       set({ user: null, isAuthenticated: false, isLoading: false });
     }
   },
+
+  // Delete Account
+  deleteAccount: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      await axios.delete(`${AUTH_API_URL}/delete-account`);
+      localStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
+      set({ user: null, isAuthenticated: false, isLoading: false });
+      return true;
+    } catch (error) {
+      set({ error: error.response?.data?.message || "Failed to delete account", isLoading: false });
+      return false;
+    }
+  },
   
-  clearError: () => set({ error: null })
+  clearError: () => set({ error: null, isLoading: false })
 }));

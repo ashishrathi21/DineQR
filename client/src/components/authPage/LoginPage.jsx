@@ -16,6 +16,10 @@ const LoginPage = ({ setIsLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email.toLowerCase().endsWith("@gmail.com")) {
+      useAuthStore.setState({ error: "Only valid @gmail.com email addresses are allowed." });
+      return;
+    }
     const success = await login(email, password);
     if (success) {
       navigate('/dashboard');
@@ -26,7 +30,7 @@ const LoginPage = ({ setIsLogin }) => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
     if (!clientId || clientId.includes("YOUR_GOOGLE_CLIENT_ID")) {
-      toast.error("Please set VITE_GOOGLE_CLIENT_ID in client/.env");
+      useAuthStore.setState({ error: "Please set VITE_GOOGLE_CLIENT_ID in client/.env" });
       return;
     }
 
@@ -41,6 +45,11 @@ const LoginPage = ({ setIsLogin }) => {
                 const res = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`);
                 const payload = await res.json();
 
+                if (!payload.email || !payload.email.toLowerCase().endsWith("@gmail.com")) {
+                  useAuthStore.setState({ error: "Only @gmail.com Google accounts are allowed." });
+                  return;
+                }
+
                 const success = await googleLogin({
                   name: payload.name,
                   email: payload.email,
@@ -53,7 +62,7 @@ const LoginPage = ({ setIsLogin }) => {
                 }
               } catch (err) {
                 console.error("Failed to fetch Google profile:", err);
-                toast.error("Failed to authenticate with Google.");
+                useAuthStore.setState({ error: "Failed to authenticate with Google." });
               }
             }
           },

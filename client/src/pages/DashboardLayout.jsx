@@ -4,7 +4,7 @@ import { useAuthStore } from '../store/useAuthStore';
 import { LayoutDashboard, UtensilsCrossed, QrCode, LogOut, Clock, Settings, Menu, X } from 'lucide-react';
 
 const DashboardLayout = () => {
-  const { user, isAuthenticated, isLoading, verifyAuth, logout } = useAuthStore();
+  const { user, isAuthenticated, isCheckingAuth, verifyAuth, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -14,17 +14,17 @@ const DashboardLayout = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!isCheckingAuth && !isAuthenticated) {
       navigate('/auth');
     }
-  }, [isLoading, isAuthenticated, navigate]);
+  }, [isCheckingAuth, isAuthenticated, navigate]);
 
   // Close mobile drawer on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  if (isLoading || !user) {
+  if (isCheckingAuth || !user) {
     return <div className="h-screen w-full flex items-center justify-center bg-white"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div></div>;
   }
 

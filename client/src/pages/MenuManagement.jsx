@@ -4,7 +4,8 @@ import { Plus, Trash2, Edit, UtensilsCrossed } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import { useAuthStore } from '../store/useAuthStore';
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/menu";
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = rawApiUrl.endsWith("/menu") ? rawApiUrl : `${rawApiUrl.replace(/\/$/, '')}/menu`;
 axios.defaults.withCredentials = true;
 
 const MenuManagement = () => {

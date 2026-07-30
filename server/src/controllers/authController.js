@@ -1,8 +1,15 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.js";
-
 import Restaurant from "../models/restaurantModel.js";
+import Category from "../models/categoryModel.js";
+import MenuItem from "../models/menuItemModel.js";
+import Order from "../models/orderModel.js";
+
+const isGmail = (email) => {
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+    return gmailRegex.test(email);
+};
 
 export const registerUser = async (req, res) => {
     try {
@@ -10,6 +17,10 @@ export const registerUser = async (req, res) => {
 
         if (!name || !email || !password || !restaurantName || !location) {
             return res.status(400).json({ success: false, message: "Please fill in all fields." });
+        }
+
+        if (!isGmail(email)) {
+            return res.status(400).json({ success: false, message: "Only valid @gmail.com email addresses are allowed." });
         }
 
         const userExists = await User.findOne({ email });
@@ -63,6 +74,10 @@ export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        if (!email || !isGmail(email)) {
+            return res.status(400).json({ success: false, message: "Please enter a valid @gmail.com email address." });
+        }
+
         const user = await User.findOne({ email });
 
         if (user && (await bcrypt.compare(password, user.password))) {
@@ -110,8 +125,8 @@ export const googleAuth = async (req, res) => {
     try {
         const { name, email, googleId, avatar } = req.body;
 
-        if (!email) {
-            return res.status(400).json({ success: false, message: "Email is required for Google login" });
+        if (!email || !isGmail(email)) {
+            return res.status(400).json({ success: false, message: "A valid @gmail.com email address is required for Google login" });
         }
 
         let user = await User.findOne({ email });
@@ -155,6 +170,31 @@ export const googleAuth = async (req, res) => {
             role: user.role,
             restaurantId: user.restaurantId,
             avatar: user.avatar
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// Permanently delete user account & all linked restaurant data
+export const deleteAccount = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const restaurantId = req.user.restaurantId?._id || req.user.restaurantId;
+
+        if (restaurantId) {
+            await Order.deleteMany({ restaurantId });
+            await MenuItem.deleteMany({ restaurantId });
+            await Category.deleteMany({ restaurantId });
+            await Restaurant.findByIdAndDelete(restaurantId);
+        }
+
+        await User.findByIdAndDelete(userId);
+        res.cookie("jwt", "", { maxAge: 0 });
+
+        res.status(200).json({
+            success: true,
+            message: "Account and all associated restaurant data have been permanently deleted."
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

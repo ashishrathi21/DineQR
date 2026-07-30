@@ -163,11 +163,24 @@ const CustomerMenu = () => {
                      ))}
                  </div>
                  <div className="border-t border-slate-200 pt-4 flex justify-between items-center">
-                     <span className="font-bold text-slate-900">Total Paid</span>
+                     <div>
+                         <span className="font-bold text-slate-900 block text-sm">Total Amount</span>
+                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pay at Counter</span>
+                     </div>
                      <span className="font-black text-orange-500 text-xl">₹{orderPlaced.totalAmount}</span>
                  </div>
               </div>
-              <button onClick={() => setOrderPlaced(null)} className="text-orange-500 font-bold hover:underline">Place another order</button>
+              <button 
+                onClick={() => {
+                  if (orderPlaced?.tableNumber) {
+                    setTableNumber(String(orderPlaced.tableNumber));
+                  }
+                  setOrderPlaced(null);
+                }} 
+                className="text-orange-500 font-bold hover:underline py-2 px-4 rounded-xl hover:bg-orange-50 transition-colors"
+              >
+                + Place another order for Table {orderPlaced.tableNumber}
+              </button>
           </div>
       );
   }
@@ -295,75 +308,46 @@ const CustomerMenu = () => {
                    ) : (
                        /* Selection State */
                        <div className="space-y-6">
-                           <div>
-                               <h3 className="text-xl font-black text-slate-900 tracking-tight">Choose Payment Method</h3>
-                               <p className="text-sm text-slate-500 font-medium mt-1">Select an option to complete checkout instantly.</p>
-                           </div>
+                            <div className="text-center space-y-2">
+                               <h2 className="text-2xl font-black text-slate-900 tracking-tight">Confirm Your Order</h2>
+                               <p className="text-sm text-slate-500 font-medium">Order will be sent directly to the kitchen.</p>
+                            </div>
 
-                           {/* Cart details */}
-                           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex justify-between items-center text-sm font-bold text-slate-700">
-                               <span>Order total for Table {tableNumber}</span>
-                               <span className="text-lg font-black text-orange-500">₹{getCartTotal()}</span>
-                           </div>
+                            {/* Cart details */}
+                            <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex justify-between items-center text-sm font-bold text-slate-700">
+                                <span>Total Amount (Table {tableNumber})</span>
+                                <span className="text-lg font-black text-orange-500">₹{getCartTotal()}</span>
+                            </div>
 
-                           <div className="space-y-3">
-                               <button 
-                                 onClick={() => setPaymentMethod("upi")}
-                                 className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between text-left transition-all ${paymentMethod === 'upi' ? 'border-orange-500 bg-orange-50/25' : 'border-slate-200 bg-white hover:border-slate-300'}`}
-                               >
-                                   <div className="flex items-center gap-3">
-                                       <Landmark size={20} className="text-orange-500" />
-                                       <div>
-                                           <p className="font-bold text-slate-900 text-sm">UPI Payment</p>
-                                           <p className="text-xs text-slate-500 font-medium">Pay via Google Pay, PhonePe, UPI apps</p>
-                                       </div>
-                                   </div>
-                                   {paymentMethod === 'upi' && <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-white"><Check size={12}/></div>}
-                               </button>
+                            <div className="space-y-3">
+                                <div 
+                                  className="w-full p-4 rounded-2xl border-2 border-orange-500 bg-orange-50/25 flex items-center justify-between text-left"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <UtensilsCrossed size={22} className="text-orange-500" />
+                                        <div>
+                                            <p className="font-bold text-slate-900 text-sm">Pay at Counter (Cash / Card)</p>
+                                            <p className="text-xs text-slate-500 font-medium">Pay directly at counter or server when food arrives</p>
+                                        </div>
+                                    </div>
+                                    <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-white shrink-0"><Check size={12}/></div>
+                                </div>
+                            </div>
 
-                               <button 
-                                 onClick={() => setPaymentMethod("card")}
-                                 className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between text-left transition-all ${paymentMethod === 'card' ? 'border-orange-500 bg-orange-50/25' : 'border-slate-200 bg-white hover:border-slate-300'}`}
-                               >
-                                   <div className="flex items-center gap-3">
-                                       <CreditCard size={20} className="text-orange-500" />
-                                       <div>
-                                           <p className="font-bold text-slate-900 text-sm">Credit / Debit Card</p>
-                                           <p className="text-xs text-slate-500 font-medium">Pay securely with Visa, Mastercard, RuPay</p>
-                                       </div>
-                                   </div>
-                                   {paymentMethod === 'card' && <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-white"><Check size={12}/></div>}
-                               </button>
-
-                               <button 
-                                 onClick={() => setPaymentMethod("cash")}
-                                 className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between text-left transition-all ${paymentMethod === 'cash' ? 'border-orange-500 bg-orange-50/25' : 'border-slate-200 bg-white hover:border-slate-300'}`}
-                               >
-                                   <div className="flex items-center gap-3">
-                                       <UtensilsCrossed size={20} className="text-orange-500" />
-                                       <div>
-                                           <p className="font-bold text-slate-900 text-sm">Pay at Counter</p>
-                                           <p className="text-xs text-slate-500 font-medium">Pay cash or card to server at counter</p>
-                                       </div>
-                                   </div>
-                                   {paymentMethod === 'cash' && <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-white"><Check size={12}/></div>}
-                               </button>
-                           </div>
-
-                           <div className="flex gap-3">
-                               <button 
-                                 onClick={() => setShowPaymentModal(false)}
-                                 className="flex-1 py-4 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-2xl transition-all"
-                               >
-                                   Cancel
-                               </button>
-                               <button 
-                                 onClick={handlePaymentAndCheckout}
-                                 className="flex-1 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-orange-500/20"
-                               >
-                                   Pay & Place Order
-                               </button>
-                           </div>
+                            <div className="flex gap-3">
+                                <button 
+                                  onClick={() => setShowPaymentModal(false)}
+                                  className="flex-1 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition-all text-sm"
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                  onClick={handlePaymentAndCheckout}
+                                  className="flex-1 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-orange-500/20 text-sm"
+                                >
+                                    Confirm & Place Order 🚀
+                                </button>
+                            </div>
                        </div>
                    )}
                </div>

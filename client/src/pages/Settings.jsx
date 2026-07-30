@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
-import { Store, Phone, MapPin, Image as ImageIcon, CreditCard, Shield, Zap, Sparkles, Check } from 'lucide-react';
+import { Store, Phone, MapPin, Image as ImageIcon, CreditCard, Shield, Zap, Sparkles, Check, Trash2, AlertTriangle } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 axios.defaults.withCredentials = true;
 
 const Settings = () => {
-    const { verifyAuth } = useAuthStore();
+    const { verifyAuth, deleteAccount } = useAuthStore();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("profile");
     const [restaurant, setRestaurant] = useState({
         name: "",
@@ -20,6 +22,8 @@ const Settings = () => {
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deletingAccount, setDeletingAccount] = useState(false);
 
     // Fetch Restaurant Profile
     const fetchProfile = async () => {
@@ -62,6 +66,24 @@ const Settings = () => {
             toast.error(error.response?.data?.message || "Failed to update profile.");
         } finally {
             setSaving(false);
+        }
+    };
+
+    // Handle Account Deletion
+    const handleConfirmDelete = async () => {
+        setDeletingAccount(true);
+        try {
+            const success = await deleteAccount();
+            if (success) {
+                toast.success("Account and all restaurant data permanently deleted.");
+                setShowDeleteModal(false);
+                navigate('/auth');
+            }
+        } catch (err) {
+            console.error("Delete account error:", err);
+            toast.error("Failed to delete account. Please try again.");
+        } finally {
+            setDeletingAccount(false);
         }
     };
 
@@ -154,91 +176,149 @@ const Settings = () => {
 
             {activeTab === "profile" ? (
                 /* Profile Tab */
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="md:col-span-2 bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
-                        <h2 className="text-xl font-bold text-slate-900 mb-6 tracking-tight flex items-center gap-2">
-                            <Store size={20} className="text-orange-500" /> Restaurant Profile
-                        </h2>
-                        
-                        <form onSubmit={handleUpdateProfile} className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-slate-700">Restaurant Name</label>
-                                <input
-                                    required
-                                    type="text"
-                                    value={restaurant.name}
-                                    onChange={(e) => setRestaurant({ ...restaurant, name: e.target.value })}
-                                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-slate-700">Location Address</label>
-                                <div className="relative">
-                                    <MapPin className="absolute left-4 top-3.5 text-slate-400" size={18} />
+                <div className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="md:col-span-2 bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+                            <h2 className="text-xl font-bold text-slate-900 mb-6 tracking-tight flex items-center gap-2">
+                                <Store size={20} className="text-orange-500" /> Restaurant Profile
+                            </h2>
+                            
+                            <form onSubmit={handleUpdateProfile} className="space-y-6">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-slate-700">Restaurant Name</label>
                                     <input
                                         required
                                         type="text"
-                                        value={restaurant.location}
-                                        onChange={(e) => setRestaurant({ ...restaurant, location: e.target.value })}
-                                        className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
+                                        value={restaurant.name}
+                                        onChange={(e) => setRestaurant({ ...restaurant, name: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
                                     />
                                 </div>
-                            </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-bold text-slate-700">Phone Contact</label>
+                                    <label className="text-sm font-bold text-slate-700">Location Address</label>
                                     <div className="relative">
-                                        <Phone className="absolute left-4 top-3.5 text-slate-400" size={18} />
+                                        <MapPin className="absolute left-4 top-3.5 text-slate-400" size={18} />
                                         <input
+                                            required
                                             type="text"
-                                            value={restaurant.phone || ""}
-                                            onChange={(e) => setRestaurant({ ...restaurant, phone: e.target.value })}
-                                            placeholder="e.g. +91 98765 43210"
+                                            value={restaurant.location}
+                                            onChange={(e) => setRestaurant({ ...restaurant, location: e.target.value })}
                                             className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-slate-700">Logo Image URL</label>
-                                    <div className="relative">
-                                        <ImageIcon className="absolute left-4 top-3.5 text-slate-400" size={18} />
-                                        <input
-                                            type="text"
-                                            value={restaurant.logo || ""}
-                                            onChange={(e) => setRestaurant({ ...restaurant, logo: e.target.value })}
-                                            placeholder="e.g. https://domain.com/logo.png"
-                                            className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
-                                        />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-slate-700">Phone Contact</label>
+                                        <div className="relative">
+                                            <Phone className="absolute left-4 top-3.5 text-slate-400" size={18} />
+                                            <input
+                                                type="text"
+                                                value={restaurant.phone || ""}
+                                                onChange={(e) => setRestaurant({ ...restaurant, phone: e.target.value })}
+                                                placeholder="e.g. +91 98765 43210"
+                                                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-slate-700">Logo Image URL</label>
+                                        <div className="relative">
+                                            <ImageIcon className="absolute left-4 top-3.5 text-slate-400" size={18} />
+                                            <input
+                                                type="text"
+                                                value={restaurant.logo || ""}
+                                                onChange={(e) => setRestaurant({ ...restaurant, logo: e.target.value })}
+                                                placeholder="e.g. https://domain.com/logo.png"
+                                                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <button
-                                type="submit"
-                                disabled={saving}
-                                className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {saving ? "Saving Changes..." : "Save Changes"}
-                            </button>
-                        </form>
-                    </div>
-
-                    {/* Logo Preview Card */}
-                    <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center h-fit">
-                        <div className="w-32 h-32 rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-6 shadow-sm">
-                            {restaurant.logo ? (
-                                <img src={restaurant.logo} alt="Restaurant Logo" className="w-full h-full object-cover" />
-                            ) : (
-                                <Store className="text-slate-300" size={48} />
-                            )}
+                                <button
+                                    type="submit"
+                                    disabled={saving}
+                                    className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {saving ? "Saving Changes..." : "Save Changes"}
+                                </button>
+                            </form>
                         </div>
-                        <h3 className="font-bold text-slate-900 text-lg">{restaurant.name || "Restaurant Logo"}</h3>
-                        <p className="text-xs font-bold text-orange-500 mt-1 uppercase tracking-widest">{restaurant.subscriptionPlan} Plan</p>
-                        <p className="text-slate-500 text-sm mt-3 font-medium px-4">{restaurant.location || "Setup your restaurant identity"}</p>
+
+                        {/* Logo Preview Card */}
+                        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center h-fit">
+                            <div className="w-32 h-32 rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-6 shadow-sm">
+                                {restaurant.logo ? (
+                                    <img src={restaurant.logo} alt="Restaurant Logo" className="w-full h-full object-cover" />
+                                ) : (
+                                    <Store className="text-slate-300" size={48} />
+                                )}
+                            </div>
+                            <h3 className="font-bold text-slate-900 text-lg">{restaurant.name || "Restaurant Logo"}</h3>
+                            <p className="text-xs font-bold text-orange-500 mt-1 uppercase tracking-widest">{restaurant.subscriptionPlan} Plan</p>
+                            <p className="text-slate-500 text-sm mt-3 font-medium px-4">{restaurant.location || "Setup your restaurant identity"}</p>
+                        </div>
                     </div>
+
+                    {/* DANGER ZONE - DELETE ACCOUNT */}
+                    <div className="bg-red-50/50 rounded-3xl p-8 border border-red-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                        <div className="flex items-start gap-4">
+                            <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                                <AlertTriangle size={24} />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-slate-900">Danger Zone — Delete Account</h3>
+                                <p className="text-xs font-medium text-slate-500 mt-1">Permanently delete your account, restaurant, menu categories, dishes, and order history from the database.</p>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={() => setShowDeleteModal(true)}
+                            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl transition-all shadow-md shadow-red-500/20 text-xs shrink-0 flex items-center gap-2 active:scale-95"
+                        >
+                            <Trash2 size={16} /> Delete Account
+                        </button>
+                    </div>
+
+                    {/* Delete Confirmation Modal */}
+                    {showDeleteModal && (
+                        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                            <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
+                                <div className="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mx-auto">
+                                    <Trash2 size={28} />
+                                </div>
+                                <div className="text-center space-y-2">
+                                    <h3 className="text-xl font-bold text-slate-900">Permanently Delete Account?</h3>
+                                    <p className="text-slate-500 text-xs font-medium leading-relaxed">
+                                        This action **cannot be undone**. Your user profile, restaurant settings, categories, menu items, and order history will be deleted forever from MongoDB.
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-3 pt-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowDeleteModal(false)}
+                                        className="flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleConfirmDelete}
+                                        disabled={deletingAccount}
+                                        className="flex-1 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition-colors shadow-md shadow-red-500/20 disabled:opacity-50"
+                                    >
+                                        {deletingAccount ? "Deleting..." : "Yes, Delete Everything"}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             ) : (
                 /* Subscriptions Tab */
