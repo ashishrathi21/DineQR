@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { QRCodeSVG } from 'qrcode.react';
-import { Download, Share2, Grid, Layers, ShieldCheck } from 'lucide-react';
+import { Download, Share2, ShieldCheck } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 
 const QRCodePage = () => {
   const { user } = useAuthStore();
   const [selectedTable, setSelectedTable] = useState("1");
-  
-  const [customHost, setCustomHost] = useState(window.location.origin);
 
   // Safe extraction of restaurant fields (handling populated vs non-populated schema)
   const restaurantId = user?.restaurantId?._id || (typeof user?.restaurantId === 'string' ? user?.restaurantId : undefined);
@@ -20,8 +18,7 @@ const QRCodePage = () => {
   const isStarter = subscriptionPlan === "Starter";
 
   // URL pointing to the customer-facing menu (pre-populated with table number)
-  const baseUrl = customHost.trim() || window.location.origin;
-  const menuUrl = `${baseUrl}/restaurant/${restaurantId}/menu${selectedTable ? `?table=${selectedTable}` : ''}`;
+  const menuUrl = `${window.location.origin}/restaurant/${restaurantId}/menu${selectedTable ? `?table=${selectedTable}` : ''}`;
 
   const downloadQR = () => {
     try {
@@ -85,18 +82,14 @@ const QRCodePage = () => {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl">
       <Toaster position="top-right" />
       <div>
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight">QR Code Generator & Studio</h1>
-        <p className="text-slate-500 font-medium mt-2">Generate, test, and print high-quality QR codes for your tables. Customers scan them to view menu and order directly.</p>
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight">QR Code Studio</h1>
+        <p className="text-slate-500 font-medium mt-2">Generate and download high-resolution QR codes for your restaurant tables.</p>
       </div>
 
       <div className="flex flex-col md:flex-row gap-8 items-start">
-        {/* QR Code Frame */}
+        {/* QR Code Card */}
         <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm flex flex-col items-center justify-center w-full md:w-auto min-w-[350px]">
-            <div 
-              onClick={() => window.open(menuUrl, '_blank')}
-              title="Click to test customer menu in new tab"
-              className="p-4 bg-white rounded-2xl shadow-xl shadow-orange-500/10 border border-slate-50 mb-6 cursor-pointer hover:scale-105 transition-transform group relative"
-            >
+            <div className="p-4 bg-white rounded-2xl shadow-xl shadow-orange-500/10 border border-slate-50 mb-6">
                <QRCodeSVG 
                  id="qr-code-svg"
                  value={menuUrl} 
@@ -106,9 +99,6 @@ const QRCodePage = () => {
                  fgColor={"#0f172a"}
                  bgColor={"#ffffff"}
                />
-               <div className="absolute inset-0 bg-slate-900/60 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-2">
-                 <span>Click to Open Menu</span> ↗
-               </div>
             </div>
 
             <h2 className="text-2xl font-black text-slate-900 tracking-tight text-center">{restaurantName}</h2>
@@ -116,57 +106,33 @@ const QRCodePage = () => {
                 TABLE {selectedTable || 'N/A'}
             </div>
             
-            <a 
-              href={menuUrl} 
-              target="_blank" 
-              rel="noreferrer"
-              className="mt-6 px-6 py-2.5 bg-slate-900 text-white rounded-xl font-bold text-xs hover:bg-orange-600 transition-colors flex items-center gap-2 shadow-md"
-            >
-              🚀 Test Customer View (Table {selectedTable})
-            </a>
-            <p className="text-slate-400 font-bold mt-4 tracking-widest text-[10px] uppercase">Powered by DineQR</p>
+            <p className="text-slate-400 font-bold mt-6 tracking-widest text-[10px] uppercase">Powered by DineQR</p>
         </div>
 
         {/* Configurations Panel */}
         <div className="flex-1 space-y-6 w-full">
             <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-2">QR Code Settings</h3>
-                  <p className="text-sm text-slate-500 font-medium">Select a table number to embed. The printed QR will contain the table detail automatically.</p>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">Table Settings</h3>
+                  <p className="text-sm text-slate-500 font-medium">Select a table number to generate its custom QR code.</p>
                 </div>
                 
-                <div className="space-y-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-bold text-slate-700 flex justify-between">
-                          <span>Enter Table Number</span>
-                          {isStarter && (
-                              <span className="text-orange-500 text-xs font-bold">Starter limit: max 10</span>
-                          )}
-                      </label>
-                      <input 
-                        type="number"
-                        min="1"
-                        max={isStarter ? maxStarterTables : undefined}
-                        value={selectedTable}
-                        onChange={(e) => handleTableChange(e.target.value)}
-                        placeholder="e.g. 5"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-bold text-slate-900"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-500 flex justify-between">
-                          <span>Base Host URL (For Mobile Testing)</span>
-                          <span className="text-slate-400 font-normal">Change if scanning from phone via Wi-Fi IP</span>
-                      </label>
-                      <input 
-                        type="text"
-                        value={customHost}
-                        onChange={(e) => setCustomHost(e.target.value)}
-                        placeholder="http://192.168.1.5:5173"
-                        className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-700"
-                      />
-                    </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-slate-700 flex justify-between">
+                      <span>Table Number</span>
+                      {isStarter && (
+                          <span className="text-orange-500 text-xs font-bold">Starter limit: max 10</span>
+                      )}
+                  </label>
+                  <input 
+                    type="number"
+                    min="1"
+                    max={isStarter ? maxStarterTables : undefined}
+                    value={selectedTable}
+                    onChange={(e) => handleTableChange(e.target.value)}
+                    placeholder="e.g. 5"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-bold text-slate-900"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 gap-3 pt-2">
