@@ -20,29 +20,33 @@ if (!process.env.MONGODB_URI && process.env.MONGO_URI) {
 const app = express();
 const server = http.createServer(app);
 
+// Setup CORS options for express and socket.io
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl), localhost, vercel deployments, or render
+    if (!origin || origin.includes("localhost") || origin.endsWith(".vercel.app") || origin.endsWith(".onrender.com")) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow production origin
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
+};
+
 // Setup Socket.io
 const io = new Server(server, {
-  cors: {
-    origin: ["http://localhost:5173", "https://localhost:5173"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  }
+  cors: corsOptions
 });
 
 // Expose io instance to express controllers
 app.set("io", io);
 
-app.use(express.json())
-app.use(express.urlencoded({ extended:true }))
-app.use(cookieParser())
-
-app.use(
-    cors({
-        origin: ["http://localhost:5173", "https://localhost:5173"],
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        credentials: true,
-    })
-);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is Live and Running! 🚀" });
