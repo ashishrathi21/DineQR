@@ -151,24 +151,24 @@ const Settings = () => {
     ];
 
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl pb-16">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300 max-w-4xl pb-16">
             <Toaster position="top-right" />
             <div>
-                <h1 className="text-3xl font-black text-slate-900 tracking-tight">Restaurant Settings</h1>
-                <p className="text-slate-500 font-medium mt-2">Manage your restaurant identity, logo, and active subscriptions.</p>
+                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Settings</h1>
+                <p className="text-slate-500 text-sm font-medium mt-1">Manage your restaurant identity, preferences, and subscription tier.</p>
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex gap-2 border-b border-slate-200 pb-px">
+            <div className="flex gap-2 border-b border-slate-200/80 pb-px">
                 <button
                     onClick={() => setActiveTab("profile")}
-                    className={`pb-4 px-2 font-bold text-sm border-b-2 transition-all ${activeTab === "profile" ? "border-orange-500 text-orange-500 font-black" : "border-transparent text-slate-500 hover:text-slate-900"}`}
+                    className={`pb-3 px-3 font-semibold text-xs border-b-2 transition-all ${activeTab === "profile" ? "border-orange-500 text-orange-600 font-bold" : "border-transparent text-slate-500 hover:text-slate-900"}`}
                 >
                     Restaurant Profile
                 </button>
                 <button
                     onClick={() => setActiveTab("subscription")}
-                    className={`pb-4 px-2 font-bold text-sm border-b-2 transition-all ${activeTab === "subscription" ? "border-orange-500 text-orange-500 font-black" : "border-transparent text-slate-500 hover:text-slate-900"}`}
+                    className={`pb-3 px-3 font-semibold text-xs border-b-2 transition-all ${activeTab === "subscription" ? "border-orange-500 text-orange-600 font-bold" : "border-transparent text-slate-500 hover:text-slate-900"}`}
                 >
                     Plan & Subscription
                 </button>
@@ -176,64 +176,67 @@ const Settings = () => {
 
             {activeTab === "profile" ? (
                 /* Profile Tab */
-                <div className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="md:col-span-2 bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
-                            <h2 className="text-xl font-bold text-slate-900 mb-6 tracking-tight flex items-center gap-2">
-                                <Store size={20} className="text-orange-500" /> Restaurant Profile
-                            </h2>
+                <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="md:col-span-2 bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs space-y-5">
+                            <div>
+                                <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                                    <Store size={18} className="text-orange-500" /> Restaurant Profile
+                                </h2>
+                                <p className="text-xs text-slate-500 font-medium mt-0.5">Basic details displayed on customer QR menus</p>
+                            </div>
                             
-                            <form onSubmit={handleUpdateProfile} className="space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-slate-700">Restaurant Name</label>
+                            <form onSubmit={handleUpdateProfile} className="space-y-4">
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-semibold text-slate-700">Restaurant Name</label>
                                     <input
                                         required
                                         type="text"
                                         value={restaurant.name}
                                         onChange={(e) => setRestaurant({ ...restaurant, name: e.target.value })}
-                                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
+                                        className="w-full px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900"
                                     />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-slate-700">Location Address</label>
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-semibold text-slate-700">Location Address</label>
                                     <div className="relative">
-                                        <MapPin className="absolute left-4 top-3.5 text-slate-400" size={18} />
+                                        <MapPin className="absolute left-3 top-2.5 text-slate-400" size={16} />
                                         <input
                                             required
                                             type="text"
                                             value={restaurant.location}
                                             onChange={(e) => setRestaurant({ ...restaurant, location: e.target.value })}
-                                            className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
+                                            className="w-full pl-9 pr-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-slate-700">Phone Contact</label>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="space-y-1.5">
+                                        <label className="text-xs font-semibold text-slate-700">Phone Contact</label>
                                         <div className="relative">
-                                            <Phone className="absolute left-4 top-3.5 text-slate-400" size={18} />
+                                            <Phone className="absolute left-3 top-2.5 text-slate-400" size={16} />
                                             <input
                                                 type="text"
                                                 value={restaurant.phone || ""}
                                                 onChange={(e) => setRestaurant({ ...restaurant, phone: e.target.value })}
                                                 placeholder="e.g. +91 98765 43210"
-                                                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
+                                                className="w-full pl-9 pr-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900"
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-slate-700">Logo Image URL</label>
+                                    <div className="space-y-1.5">
+                                        <label className="text-xs font-semibold text-slate-700">Logo Image URL</label>
                                         <div className="relative">
-                                            <ImageIcon className="absolute left-4 top-3.5 text-slate-400" size={18} />
+                                            <ImageIcon className="absolute left-3 top-2.5 text-slate-400" size={16} />
                                             <input
                                                 type="text"
                                                 value={restaurant.logo || ""}
                                                 onChange={(e) => setRestaurant({ ...restaurant, logo: e.target.value })}
                                                 placeholder="e.g. https://domain.com/logo.png"
-                                                className="w-full pl-12 pr-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium text-slate-800"
+                                                className="w-full pl-9 pr-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900"
                                             />
                                         </div>
                                     </div>
@@ -242,7 +245,7 @@ const Settings = () => {
                                 <button
                                     type="submit"
                                     disabled={saving}
-                                    className="w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-all shadow-xs text-xs disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {saving ? "Saving Changes..." : "Save Changes"}
                                 </button>
@@ -250,60 +253,60 @@ const Settings = () => {
                         </div>
 
                         {/* Logo Preview Card */}
-                        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center h-fit">
-                            <div className="w-32 h-32 rounded-3xl bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-6 shadow-sm">
+                        <div className="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs flex flex-col items-center justify-center text-center h-fit">
+                            <div className="w-24 h-24 rounded-xl bg-slate-100 border border-slate-200/80 flex items-center justify-center overflow-hidden mb-4 shadow-xs">
                                 {restaurant.logo ? (
                                     <img src={restaurant.logo} alt="Restaurant Logo" className="w-full h-full object-cover" />
                                 ) : (
-                                    <Store className="text-slate-300" size={48} />
+                                    <Store className="text-slate-400" size={36} />
                                 )}
                             </div>
-                            <h3 className="font-bold text-slate-900 text-lg">{restaurant.name || "Restaurant Logo"}</h3>
-                            <p className="text-xs font-bold text-orange-500 mt-1 uppercase tracking-widest">{restaurant.subscriptionPlan} Plan</p>
-                            <p className="text-slate-500 text-sm mt-3 font-medium px-4">{restaurant.location || "Setup your restaurant identity"}</p>
+                            <h3 className="font-bold text-slate-900 text-sm">{restaurant.name || "Restaurant Logo"}</h3>
+                            <p className="text-[11px] font-semibold text-orange-600 mt-0.5 uppercase tracking-wider">{restaurant.subscriptionPlan} Plan</p>
+                            <p className="text-slate-500 text-xs mt-2 font-medium px-2">{restaurant.location || "Setup your restaurant identity"}</p>
                         </div>
                     </div>
 
                     {/* DANGER ZONE - DELETE ACCOUNT */}
-                    <div className="bg-red-50/50 rounded-3xl p-8 border border-red-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                        <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-red-600 shrink-0">
-                                <AlertTriangle size={24} />
+                    <div className="bg-red-50/50 rounded-xl p-5 border border-red-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-start gap-3">
+                            <div className="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center text-red-600 shrink-0">
+                                <AlertTriangle size={18} />
                             </div>
                             <div>
-                                <h3 className="text-lg font-bold text-slate-900">Danger Zone — Delete Account</h3>
-                                <p className="text-xs font-medium text-slate-500 mt-1">Permanently delete your account, restaurant, menu categories, dishes, and order history from the database.</p>
+                                <h3 className="text-sm font-bold text-slate-900">Danger Zone — Delete Account</h3>
+                                <p className="text-xs font-medium text-slate-500 mt-0.5">Permanently delete your account, restaurant, categories, dishes, and orders from database.</p>
                             </div>
                         </div>
 
                         <button
                             type="button"
                             onClick={() => setShowDeleteModal(true)}
-                            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl transition-all shadow-md shadow-red-500/20 text-xs shrink-0 flex items-center gap-2 active:scale-95"
+                            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-all text-xs shrink-0 flex items-center gap-1.5 active:scale-95"
                         >
-                            <Trash2 size={16} /> Delete Account
+                            <Trash2 size={14} /> Delete Account
                         </button>
                     </div>
 
                     {/* Delete Confirmation Modal */}
                     {showDeleteModal && (
-                        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                            <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
-                                <div className="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mx-auto">
-                                    <Trash2 size={28} />
+                        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                            <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl space-y-4 animate-in zoom-in-95 duration-200 border border-slate-200/80">
+                                <div className="w-11 h-11 rounded-lg bg-red-100 text-red-600 flex items-center justify-center mx-auto">
+                                    <Trash2 size={22} />
                                 </div>
-                                <div className="text-center space-y-2">
-                                    <h3 className="text-xl font-bold text-slate-900">Permanently Delete Account?</h3>
+                                <div className="text-center space-y-1">
+                                    <h3 className="text-base font-bold text-slate-900">Permanently Delete Account?</h3>
                                     <p className="text-slate-500 text-xs font-medium leading-relaxed">
-                                        This action **cannot be undone**. Your user profile, restaurant settings, categories, menu items, and order history will be deleted forever from MongoDB.
+                                        This action cannot be undone. All restaurant settings, menu items, and order records will be wiped forever.
                                     </p>
                                 </div>
 
-                                <div className="flex gap-3 pt-2">
+                                <div className="flex gap-2.5 pt-1">
                                     <button
                                         type="button"
                                         onClick={() => setShowDeleteModal(false)}
-                                        className="flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition-colors"
+                                        className="flex-1 py-2 bg-slate-100 hover:bg-slate-200/80 text-slate-700 font-semibold rounded-lg text-xs transition-colors"
                                     >
                                         Cancel
                                     </button>
@@ -311,9 +314,9 @@ const Settings = () => {
                                         type="button"
                                         onClick={handleConfirmDelete}
                                         disabled={deletingAccount}
-                                        className="flex-1 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition-colors shadow-md shadow-red-500/20 disabled:opacity-50"
+                                        className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-xs transition-colors shadow-xs disabled:opacity-50"
                                     >
-                                        {deletingAccount ? "Deleting..." : "Yes, Delete Everything"}
+                                        {deletingAccount ? "Deleting..." : "Confirm Delete"}
                                     </button>
                                 </div>
                             </div>
@@ -322,65 +325,64 @@ const Settings = () => {
                 </div>
             ) : (
                 /* Subscriptions Tab */
-                <div className="space-y-8">
+                <div className="space-y-6">
                     {/* Active Subscription Banner */}
-                    <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl shadow-slate-900/10">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                        <div className="space-y-2 z-10">
-                            <span className="bg-orange-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                                Active Subscription
+                    <div className="bg-slate-900 rounded-xl p-6 text-white relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+                        <div className="space-y-1 z-10">
+                            <span className="bg-orange-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+                                Active Plan
                             </span>
-                            <h2 className="text-3xl font-black tracking-tight">{restaurant.subscriptionPlan} Plan</h2>
-                            <p className="text-slate-400 text-sm font-medium">Status: <span className="text-emerald-400 font-bold capitalize">{restaurant.subscriptionStatus}</span>. Billing renews monthly.</p>
+                            <h2 className="text-2xl font-bold tracking-tight">{restaurant.subscriptionPlan} Tier</h2>
+                            <p className="text-slate-400 text-xs font-medium">Status: <span className="text-emerald-400 font-semibold capitalize">{restaurant.subscriptionStatus}</span></p>
                         </div>
-                        <div className="flex items-center gap-3 px-6 py-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 z-10">
-                            <Shield className="text-orange-400" size={24} />
+                        <div className="flex items-center gap-2.5 px-4 py-3 bg-white/5 rounded-lg border border-white/10 z-10">
+                            <Shield className="text-orange-400" size={20} />
                             <div>
-                                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Table Capacity</p>
-                                <p className="text-lg font-black text-white">{restaurant.subscriptionPlan === "Starter" ? "Up to 10 Tables" : "Unlimited Tables"}</p>
+                                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Capacity</p>
+                                <p className="text-sm font-bold text-white">{restaurant.subscriptionPlan === "Starter" ? "Up to 10 Tables" : "Unlimited Tables"}</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Choose Plan Cards */}
                     <div>
-                        <h3 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">Available Subscription Plans</h3>
+                        <h3 className="text-base font-semibold text-slate-900 mb-4">Available Subscription Plans</h3>
                         
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             {plans.map((p, idx) => {
                                 const isActivePlan = restaurant.subscriptionPlan === p.name;
                                 return (
                                     <div
                                         key={idx}
-                                        className={`relative p-6 rounded-3xl border transition-all flex flex-col justify-between ${
+                                        className={`relative p-5 rounded-xl border transition-all flex flex-col justify-between ${
                                             isActivePlan
-                                                ? "border-orange-500 bg-orange-50/20 text-slate-900 scale-[1.02] z-10 shadow-lg shadow-orange-500/5"
-                                                : "border-slate-200 bg-white text-slate-900 hover:shadow-md"
+                                                ? "border-orange-500 bg-orange-50/20 text-slate-900 shadow-xs"
+                                                : "border-slate-200/80 bg-white text-slate-900 hover:border-slate-300"
                                         }`}
                                     >
                                         {isActivePlan && (
-                                            <span className="absolute -top-3 left-6 bg-orange-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                            <span className="absolute -top-2.5 left-4 bg-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">
                                                 Current Plan
                                             </span>
                                         )}
 
                                         <div>
-                                            <div className="flex items-center justify-between mb-4">
-                                                <h4 className="text-lg font-bold text-slate-900">{p.name}</h4>
-                                                <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
+                                            <div className="flex items-center justify-between mb-3">
+                                                <h4 className="text-base font-bold text-slate-900">{p.name}</h4>
+                                                <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center">
                                                     {p.icon}
                                                 </div>
                                             </div>
-                                            <p className="text-slate-500 text-xs font-medium mb-4">{p.description}</p>
+                                            <p className="text-slate-500 text-xs font-medium mb-3">{p.description}</p>
                                             
-                                            <div className="flex items-baseline mb-6">
-                                                <span className="text-3xl font-black text-slate-900">₹{p.price}</span>
-                                                <span className="text-slate-400 text-xs font-bold ml-1">/month</span>
+                                            <div className="flex items-baseline mb-4">
+                                                <span className="text-2xl font-bold text-slate-900">₹{p.price}</span>
+                                                <span className="text-slate-400 text-xs font-medium ml-1">/month</span>
                                             </div>
 
-                                            <ul className="space-y-3 mb-8">
+                                            <ul className="space-y-2 mb-6">
                                                 {p.features.map((feat, fIdx) => (
-                                                    <li key={fIdx} className="flex items-center text-xs font-bold text-slate-700">
+                                                    <li key={fIdx} className="flex items-center text-xs font-medium text-slate-700">
                                                         <Check size={14} className="text-orange-500 mr-2 shrink-0" />
                                                         {feat}
                                                     </li>
@@ -391,13 +393,13 @@ const Settings = () => {
                                         <button
                                             onClick={() => handleUpgradeSubscription(p.name)}
                                             disabled={isActivePlan}
-                                            className={`w-full py-3.5 rounded-xl font-bold text-xs transition-all active:scale-[0.98] ${
+                                            className={`w-full py-2.5 rounded-lg font-semibold text-xs transition-all ${
                                                 isActivePlan
-                                                    ? "bg-slate-100 text-slate-400 cursor-not-allowed"
-                                                    : "bg-slate-900 text-white hover:bg-slate-800 shadow-md shadow-slate-900/10"
+                                                    ? "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/60"
+                                                    : "bg-slate-900 text-white hover:bg-slate-800 shadow-xs"
                                             }`}
                                         >
-                                            {isActivePlan ? "Current Active Plan" : `Upgrade to ${p.name}`}
+                                            {isActivePlan ? "Active Plan" : `Upgrade to ${p.name}`}
                                         </button>
                                     </div>
                                 );

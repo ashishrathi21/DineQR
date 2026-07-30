@@ -97,93 +97,102 @@ const MenuManagement = () => {
   if (isLoading) return <div className="h-full w-full flex items-center justify-center bg-transparent"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div></div>;
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
       <Toaster position="top-right" />
       <div>
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Menu Management</h1>
-        <p className="text-slate-500 font-medium mt-2">Add or edit your digital menu offerings.</p>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Menu Management</h1>
+        <p className="text-slate-500 text-sm font-medium mt-1">Organize categories and digital menu offerings for your restaurant.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Categories Section */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm h-fit">
-          <h2 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">Categories</h2>
+        <div className="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs h-fit space-y-5">
+          <div>
+            <h2 className="text-base font-semibold text-slate-900">Categories</h2>
+            <p className="text-xs text-slate-500 font-medium mt-0.5">Manage item groups (e.g. Starters, Drinks)</p>
+          </div>
           
-          <form onSubmit={handleAddCategory} className="flex gap-2 mb-6">
+          <form onSubmit={handleAddCategory} className="flex gap-2">
             <input 
               type="text" 
               value={newCatName}
               onChange={(e) => setNewCatName(e.target.value)}
-              placeholder="e.g. Starters" 
-              className="flex-1 px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium"
+              placeholder="New category..." 
+              className="flex-1 px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900"
             />
-            <button type="submit" className="w-12 flex items-center justify-center bg-orange-500 text-white rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/20">
-              <Plus size={20} />
+            <button type="submit" className="px-3.5 flex items-center justify-center bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-xs font-semibold shrink-0">
+              <Plus size={16} />
             </button>
           </form>
 
-          <ul className="space-y-2">
+          <ul className="space-y-1.5 pt-1">
             {categories.map(cat => (
-              <li key={cat._id} className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 group border border-transparent hover:border-slate-100 transition-colors">
-                <span className="font-bold text-slate-700">{cat.name}</span>
+              <li key={cat._id} className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-50 group border border-transparent hover:border-slate-200/60 transition-colors">
+                <span className="font-semibold text-xs text-slate-700">{cat.name}</span>
                 <button onClick={() => handleDeleteCategory(cat._id)} className="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all p-1">
-                  <Trash2 size={16} />
+                  <Trash2 size={14} />
                 </button>
               </li>
             ))}
-            {categories.length === 0 && <p className="text-sm font-medium text-slate-400 text-center py-4">No categories added</p>}
+            {categories.length === 0 && <p className="text-xs font-medium text-slate-400 text-center py-4 border border-dashed border-slate-200 rounded-lg">No categories added</p>}
           </ul>
         </div>
 
         {/* Menu Items Section */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-6">
           
           {/* Add Item Form */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
-            <h2 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">Add Menu Item</h2>
-            <form onSubmit={handleAddItem} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input required type="text" placeholder="Item Name" value={newItem.name} onChange={e => setNewItem({...newItem, name: e.target.value})} className="px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium" />
-                <input required type="number" placeholder="Price (₹)" value={newItem.price} onChange={e => setNewItem({...newItem, price: e.target.value})} className="px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium" />
+          <div className="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs space-y-4">
+            <div>
+              <h2 className="text-base font-semibold text-slate-900">Add Menu Item</h2>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">Create a new dish or beverage entry for the QR menu</p>
+            </div>
+            <form onSubmit={handleAddItem} className="space-y-3 pt-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input required type="text" placeholder="Item Name" value={newItem.name} onChange={e => setNewItem({...newItem, name: e.target.value})} className="px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900" />
+                <input required type="number" placeholder="Price (₹)" value={newItem.price} onChange={e => setNewItem({...newItem, price: e.target.value})} className="px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <select required value={newItem.categoryId} onChange={e => setNewItem({...newItem, categoryId: e.target.value})} className="px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <select required value={newItem.categoryId} onChange={e => setNewItem({...newItem, categoryId: e.target.value})} className="px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900">
                    {categories.map(cat => <option key={cat._id} value={cat._id}>{cat.name}</option>)}
                 </select>
-                <input type="text" placeholder="Image URL (Optional)" value={newItem.image} onChange={e => setNewItem({...newItem, image: e.target.value})} className="px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium" />
+                <input type="text" placeholder="Image URL (Optional)" value={newItem.image} onChange={e => setNewItem({...newItem, image: e.target.value})} className="px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900" />
               </div>
-              <input type="text" placeholder="Description" value={newItem.description} onChange={e => setNewItem({...newItem, description: e.target.value})} className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-medium" />
+              <input type="text" placeholder="Description" value={newItem.description} onChange={e => setNewItem({...newItem, description: e.target.value})} className="w-full px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-medium text-slate-900" />
               
-              <button disabled={categories.length === 0} type="submit" className="w-full py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                <Plus size={18} /> Add to Menu
+              <button disabled={categories.length === 0} type="submit" className="w-full py-2.5 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-all text-xs flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                <Plus size={16} /> Add Menu Item
               </button>
             </form>
           </div>
 
           {/* List Items */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
-            <h2 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">Active Menu</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs space-y-4">
+            <div>
+              <h2 className="text-base font-semibold text-slate-900">Active Menu Items ({menuItems.length})</h2>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">Dishes currently visible to customers on table QR scan</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
               {menuItems.map(item => (
-                <div key={item._id} className="flex gap-4 p-4 border border-slate-100 rounded-2xl hover:border-orange-200 transition-colors group">
-                    <div className="w-20 h-20 bg-slate-50 rounded-xl overflow-hidden flex-shrink-0">
-                       {item.image ? <img src={item.image} alt={item.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-slate-300"><UtensilsCrossed size={24}/></div>}
+                <div key={item._id} className="flex gap-3 p-3 border border-slate-200/80 rounded-lg hover:border-slate-300 transition-colors group bg-white">
+                    <div className="w-16 h-16 bg-slate-100 rounded-md overflow-hidden shrink-0">
+                       {item.image ? <img src={item.image} alt={item.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-slate-400"><UtensilsCrossed size={18}/></div>}
                     </div>
                     <div className="flex-1 min-w-0">
                         <div className="flex justify-between items-start">
-                           <h3 className="font-bold text-slate-900 truncate">{item.name}</h3>
-                           <button onClick={()=>handleDeleteItem(item._id)} className="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all">
-                               <Trash2 size={16} />
+                           <h3 className="font-semibold text-slate-900 text-xs truncate">{item.name}</h3>
+                           <button onClick={()=>handleDeleteItem(item._id)} className="text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all p-0.5">
+                               <Trash2 size={14} />
                            </button>
                         </div>
-                        <p className="text-xs font-bold text-orange-500 my-1">{item.categoryId?.name}</p>
-                        <p className="text-slate-500 text-xs truncate mb-2">{item.description}</p>
-                        <p className="font-black text-slate-900">₹{item.price}</p>
+                        <p className="text-[11px] font-semibold text-orange-600 my-0.5">{item.categoryId?.name}</p>
+                        <p className="text-slate-500 text-[11px] truncate mb-1">{item.description}</p>
+                        <p className="font-bold text-slate-900 text-xs">₹{item.price}</p>
                     </div>
                 </div>
               ))}
-              {menuItems.length === 0 && <p className="text-sm font-medium text-slate-400 col-span-full py-4 text-center">No menu items added yet.</p>}
+              {menuItems.length === 0 && <p className="text-xs font-medium text-slate-400 col-span-full py-8 text-center border border-dashed border-slate-200 rounded-lg">No menu items added yet.</p>}
             </div>
           </div>
 

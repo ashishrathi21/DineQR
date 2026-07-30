@@ -97,62 +97,62 @@ const LiveOrders = () => {
     const completedOrders = orders.filter(o => o.status === 'ready' || o.status === 'completed');
 
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 min-h-full">
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300 min-h-full">
             <Toaster position="top-right" />
             <div>
-                <h1 className="text-3xl font-black text-slate-900 tracking-tight">Live Orders Board</h1>
-                <p className="text-slate-500 font-medium mt-2">Kitchen operations updating in real-time via websockets.</p>
+                <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Live Orders Board</h1>
+                <p className="text-slate-500 text-sm font-medium mt-1">Real-time kitchen order stream powered by WebSockets.</p>
             </div>
 
-            <div className="flex gap-6 overflow-x-auto pb-4 h-[calc(100vh-180px)]">
+            <div className="flex gap-4 overflow-x-auto pb-4 h-[calc(100vh-170px)]">
                 
                 {/* Pending Column */}
-                <div className="flex-1 min-w-[320px] bg-slate-100/50 rounded-3xl p-6 border border-slate-200/50 overflow-y-auto">
-                    <div className="flex items-center gap-2 mb-6">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse"></div>
-                        <h2 className="text-lg font-bold text-slate-900">New / Pending</h2>
-                        <span className="ml-auto bg-white px-2 py-1 rounded-lg text-xs font-bold text-slate-600 shadow-sm border border-slate-100">{pendingOrders.length}</span>
+                <div className="flex-1 min-w-[300px] max-w-sm bg-slate-100/60 rounded-xl p-4 border border-slate-200/80 overflow-y-auto">
+                    <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200/60">
+                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                        <h2 className="text-sm font-semibold text-slate-900">New Orders</h2>
+                        <span className="ml-auto bg-white px-2 py-0.5 rounded-md text-xs font-semibold text-slate-600 border border-slate-200/80 shadow-xs">{pendingOrders.length}</span>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                         {pendingOrders.map(order => (
-                            <OrderCard key={order._id} order={order} nextAction={() => updateStatus(order._id, 'preparing')} actionText="Accept & Cook" actionIcon={<ChefHat size={16} />} actionColor="bg-orange-500 hover:bg-orange-600 shadow-orange-500/20" />
+                            <OrderCard key={order._id} order={order} nextAction={() => updateStatus(order._id, 'preparing')} actionText="Accept & Start Cooking" actionIcon={<ChefHat size={14} />} actionColor="bg-orange-500 hover:bg-orange-600 text-white shadow-xs" />
                         ))}
                         {pendingOrders.length === 0 && (
-                            <div className="text-center py-12 text-slate-400 font-medium text-sm">No pending orders.</div>
+                            <div className="text-center py-10 text-slate-400 font-medium text-xs border border-dashed border-slate-200 rounded-lg">No pending orders</div>
                         )}
                     </div>
                 </div>
 
                 {/* Preparing Column */}
-                <div className="flex-1 min-w-[320px] bg-slate-100/50 rounded-3xl p-6 border border-slate-200/50 overflow-y-auto">
-                    <div className="flex items-center gap-2 mb-6">
-                        <div className="w-2.5 h-2.5 rounded-full bg-orange-500"></div>
-                        <h2 className="text-lg font-bold text-slate-900">Preparing</h2>
-                        <span className="ml-auto bg-white px-2 py-1 rounded-lg text-xs font-bold text-slate-600 shadow-sm border border-slate-100">{preparingOrders.length}</span>
+                <div className="flex-1 min-w-[300px] max-w-sm bg-slate-100/60 rounded-xl p-4 border border-slate-200/80 overflow-y-auto">
+                    <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200/60">
+                        <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                        <h2 className="text-sm font-semibold text-slate-900">Preparing</h2>
+                        <span className="ml-auto bg-white px-2 py-0.5 rounded-md text-xs font-semibold text-slate-600 border border-slate-200/80 shadow-xs">{preparingOrders.length}</span>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                         {preparingOrders.map(order => (
-                            <OrderCard key={order._id} order={order} nextAction={() => updateStatus(order._id, 'ready')} actionText="Mark Ready" actionIcon={<Check size={16} />} actionColor="bg-emerald-500 hover:bg-emerald-600 shadow-emerald-500/20" />
+                            <OrderCard key={order._id} order={order} nextAction={() => updateStatus(order._id, 'ready')} actionText="Mark as Ready" actionIcon={<Check size={14} />} actionColor="bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs" />
                         ))}
                         {preparingOrders.length === 0 && (
-                            <div className="text-center py-12 text-slate-400 font-medium text-sm">No orders currently cooking.</div>
+                            <div className="text-center py-10 text-slate-400 font-medium text-xs border border-dashed border-slate-200 rounded-lg">No orders cooking</div>
                         )}
                     </div>
                 </div>
 
                 {/* Completed Column */}
-                <div className="flex-1 min-w-[320px] bg-slate-100/50 rounded-3xl p-6 border border-slate-200/50 overflow-y-auto">
-                    <div className="flex items-center gap-2 mb-6">
-                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
-                        <h2 className="text-lg font-bold text-slate-900">Ready / Completed</h2>
-                        <span className="ml-auto bg-white px-2 py-1 rounded-lg text-xs font-bold text-slate-600 shadow-sm border border-slate-100">{completedOrders.length}</span>
+                <div className="flex-1 min-w-[300px] max-w-sm bg-slate-100/60 rounded-xl p-4 border border-slate-200/80 overflow-y-auto">
+                    <div className="flex items-center gap-2 mb-4 pb-3 border-b border-slate-200/60">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                        <h2 className="text-sm font-semibold text-slate-900">Ready & Completed</h2>
+                        <span className="ml-auto bg-white px-2 py-0.5 rounded-md text-xs font-semibold text-slate-600 border border-slate-200/80 shadow-xs">{completedOrders.length}</span>
                     </div>
-                    <div className="space-y-4 opacity-85">
+                    <div className="space-y-3 opacity-90">
                         {completedOrders.map(order => (
                             <OrderCard key={order._id} order={order} completed={true} />
                         ))}
                         {completedOrders.length === 0 && (
-                            <div className="text-center py-12 text-slate-400 font-medium text-sm">No completed orders today.</div>
+                            <div className="text-center py-10 text-slate-400 font-medium text-xs border border-dashed border-slate-200 rounded-lg">No completed orders</div>
                         )}
                     </div>
                 </div>
@@ -167,19 +167,19 @@ const OrderCard = ({ order, nextAction, actionText, actionIcon, actionColor, com
     const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     
     return (
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm transition-all hover:shadow-md animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex justify-between items-start mb-4">
+        <div className="bg-white rounded-lg p-4 border border-slate-200/80 shadow-xs transition-all hover:border-slate-300">
+            <div className="flex justify-between items-start mb-3">
                 <div>
-                    <h3 className="text-slate-900 font-bold mb-1">Table {order.tableNumber}</h3>
-                    <p className="text-xs font-bold text-slate-400 flex items-center gap-1"><Clock size={12}/> {time}</p>
+                    <h3 className="text-slate-900 font-semibold text-sm">Table {order.tableNumber}</h3>
+                    <p className="text-[11px] font-medium text-slate-400 flex items-center gap-1 mt-0.5"><Clock size={12}/> {time}</p>
                 </div>
-                <div className="bg-slate-50 px-3 py-1 rounded-xl border border-slate-100 font-black text-slate-900 text-sm">₹{order.totalAmount}</div>
+                <div className="bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200/80 font-bold text-slate-900 text-xs">₹{order.totalAmount}</div>
             </div>
             
-            <div className="space-y-2 mb-6 border-t border-slate-100 pt-4">
+            <div className="space-y-1.5 mb-4 border-t border-slate-100 pt-3">
                 {order.items.map((item, idx) => (
-                    <div key={idx} className="flex justify-between text-sm font-medium">
-                        <span className="text-slate-700"><span className="text-slate-400 font-bold mr-2">{item.quantity}x</span>{item.name}</span>
+                    <div key={idx} className="flex justify-between text-xs font-medium text-slate-700">
+                        <span><span className="text-slate-400 font-semibold mr-1.5">{item.quantity}x</span>{item.name}</span>
                     </div>
                 ))}
             </div>
@@ -187,13 +187,13 @@ const OrderCard = ({ order, nextAction, actionText, actionIcon, actionColor, com
             {!completed ? (
                 <button 
                   onClick={nextAction}
-                  className={`w-full py-3 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 ${actionColor}`}
+                  className={`w-full py-2 font-semibold text-xs rounded-md transition-all flex items-center justify-center gap-1.5 ${actionColor}`}
                 >
                   {actionIcon} {actionText}
                 </button>
             ) : (
-                <div className="w-full py-3 bg-slate-50 text-emerald-500 font-bold rounded-xl flex items-center justify-center gap-2 border border-slate-100">
-                    <CheckCircle size={16} /> Ready & Served
+                <div className="w-full py-1.5 bg-emerald-50/60 text-emerald-700 font-semibold text-xs rounded-md flex items-center justify-center gap-1.5 border border-emerald-200/60">
+                    <CheckCircle size={14} /> Ready & Served
                 </div>
             )}
         </div>

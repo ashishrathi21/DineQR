@@ -79,21 +79,21 @@ const QRCodePage = () => {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl">
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300 max-w-4xl">
       <Toaster position="top-right" />
       <div>
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight">QR Code Studio</h1>
-        <p className="text-slate-500 font-medium mt-2">Generate and download high-resolution QR codes for your restaurant tables.</p>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">QR Code Studio</h1>
+        <p className="text-slate-500 text-sm font-medium mt-1">Generate and download high-resolution QR codes for your restaurant tables.</p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8 items-start">
+      <div className="flex flex-col md:flex-row gap-6 items-start">
         {/* QR Code Card */}
-        <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm flex flex-col items-center justify-center w-full md:w-auto min-w-[350px]">
-            <div className="p-4 bg-white rounded-2xl shadow-xl shadow-orange-500/10 border border-slate-50 mb-6">
+        <div className="bg-white rounded-xl p-6 border border-slate-200/80 shadow-xs flex flex-col items-center justify-center w-full md:w-auto min-w-[320px]">
+            <div className="p-3 bg-white rounded-lg border border-slate-200/80 mb-5 shadow-xs">
                <QRCodeSVG 
                  id="qr-code-svg"
                  value={menuUrl} 
-                 size={240}
+                 size={200}
                  level={"H"}
                  includeMargin={true}
                  fgColor={"#0f172a"}
@@ -101,27 +101,27 @@ const QRCodePage = () => {
                />
             </div>
 
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight text-center">{restaurantName}</h2>
-            <div className="mt-2 bg-orange-100 text-orange-600 px-4 py-1.5 rounded-full text-lg font-black tracking-wider uppercase">
+            <h2 className="text-lg font-bold text-slate-900 tracking-tight text-center">{restaurantName}</h2>
+            <div className="mt-1.5 bg-orange-50 text-orange-700 border border-orange-200/80 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase">
                 TABLE {selectedTable || 'N/A'}
             </div>
             
-            <p className="text-slate-400 font-bold mt-6 tracking-widest text-[10px] uppercase">Powered by DineQR</p>
+            <p className="text-slate-400 font-semibold mt-5 tracking-wider text-[10px] uppercase">Powered by DineQR</p>
         </div>
 
         {/* Configurations Panel */}
-        <div className="flex-1 space-y-6 w-full">
-            <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6">
+        <div className="flex-1 space-y-5 w-full">
+            <div className="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs space-y-5">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-2">Table Settings</h3>
-                  <p className="text-sm text-slate-500 font-medium">Select a table number to generate its custom QR code.</p>
+                  <h3 className="text-base font-semibold text-slate-900">Table Settings</h3>
+                  <p className="text-xs text-slate-500 font-medium mt-0.5">Select a table number to generate its custom QR code.</p>
                 </div>
                 
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-slate-700 flex justify-between">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-700 flex justify-between">
                       <span>Table Number</span>
                       {isStarter && (
-                          <span className="text-orange-500 text-xs font-bold">Starter limit: max 10</span>
+                          <span className="text-orange-600 text-xs font-semibold">Starter limit: max 10</span>
                       )}
                   </label>
                   <input 
@@ -131,33 +131,33 @@ const QRCodePage = () => {
                     value={selectedTable}
                     onChange={(e) => handleTableChange(e.target.value)}
                     placeholder="e.g. 5"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-sm font-bold text-slate-900"
+                    className="w-full px-3.5 py-2 rounded-lg bg-slate-50 border border-slate-200/80 focus:bg-white focus:ring-2 focus:ring-orange-500/20 outline-none transition-all text-xs font-semibold text-slate-900"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 pt-2">
-                    <button onClick={downloadQR} className="w-full py-4 bg-orange-500 text-white font-bold rounded-2xl hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 active:scale-[0.98] flex items-center justify-center gap-2">
-                        <Download size={20} /> Download Printable QR (PNG)
+                <div className="grid grid-cols-1 gap-2.5 pt-1">
+                    <button onClick={downloadQR} className="w-full py-2.5 bg-orange-500 text-white font-semibold text-xs rounded-lg hover:bg-orange-600 transition-all shadow-xs flex items-center justify-center gap-1.5">
+                        <Download size={16} /> Download Printable QR (PNG)
                     </button>
                     <button onClick={() => {
                       navigator.clipboard.writeText(menuUrl);
                       toast.success("Menu link copied to clipboard! 📋");
-                    }} className="w-full py-4 bg-slate-50 text-slate-700 font-bold rounded-2xl hover:bg-slate-100 transition-all flex items-center justify-center gap-2">
-                        <Share2 size={20} /> Copy Customer Link
+                    }} className="w-full py-2.5 bg-slate-100 text-slate-700 font-semibold text-xs rounded-lg hover:bg-slate-200/80 transition-all flex items-center justify-center gap-1.5 border border-slate-200/60">
+                        <Share2 size={16} /> Copy Customer Link
                     </button>
                 </div>
             </div>
 
             {/* Subscription Alert Card */}
-            <div className={`rounded-3xl p-6 border flex gap-4 ${
+            <div className={`rounded-xl p-4 border flex gap-3 ${
                 isStarter 
-                ? "bg-amber-50 border-amber-100 text-amber-900" 
-                : "bg-emerald-50 border-emerald-100 text-emerald-950"
+                ? "bg-amber-50/60 border-amber-200/80 text-amber-900" 
+                : "bg-emerald-50/60 border-emerald-200/80 text-emerald-950"
             }`}>
-                <ShieldCheck size={24} className="shrink-0 text-orange-500" />
+                <ShieldCheck size={20} className="shrink-0 text-orange-600 mt-0.5" />
                 <div>
-                    <h4 className="font-bold text-sm">Subscription Tier Details</h4>
-                    <p className="text-xs font-medium mt-1 leading-relaxed">
+                    <h4 className="font-semibold text-xs">Subscription Tier Details</h4>
+                    <p className="text-[11px] font-medium mt-0.5 leading-relaxed">
                         {isStarter 
                             ? "Your current Starter Plan limits you to generating QR codes for tables 1 through 10. Upgrade to Pro/Business to configure unlimited tables and unlock custom branding tags on downloads."
                             : `You are on the ${subscriptionPlan} Plan. You have unlimited table configurations. Feel free to input any table code.`
