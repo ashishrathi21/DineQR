@@ -1,0 +1,21 @@
+# Environment Variables (CRITICAL SECURITY)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build & Log Outputs
+client/dist/
+server/error.log
+*.log
+
+# System & OS Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
