@@ -64,10 +64,10 @@ const DashboardLayout = () => {
             <Link 
               key={link.name}
               to={link.path}
-              className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm transition-all ${
+              className={`flex items-center gap-3 px-3.5 py-2.5 rounded-md text-sm transition-all ${
                 isActive 
-                  ? 'bg-slate-900 text-white font-medium shadow-xs' 
-                  : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 font-medium'
+                  ? 'text-slate-900 font-medium border-b-2 border-slate-700 ' 
+                  : 'text-slate-500 hover:bg-slate-100/80 hover:text-slate-900 font-medium'
               }`}
             >
               {link.icon}
