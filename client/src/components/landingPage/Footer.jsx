@@ -8,7 +8,7 @@ import {
   Phone, 
   MapPin 
 } from 'lucide-react';
-import DineQR_Logo from '../../assets/DineQR_Logo.png';
+import DineQR_Logo from '../../assets/dashboard_logo.png';
 
 const Footer = () => {
   return (
@@ -21,7 +21,6 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <img src={DineQR_Logo} alt="DineQR Logo" className="h-9 w-auto brightness-110" />
-              <span className="text-white text-xl font-bold tracking-tight">DineQR</span>
             </div>
             <p className="text-sm leading-relaxed font-normal max-w-xs">
               "Scan. Order. Enjoy." <br />
@@ -93,12 +92,17 @@ const Footer = () => {
 
         {/* Bottom Bar: Divider & Copyright */}
         <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-xs font-medium text-slate-500 tracking-wide">
-            © 2026 DineQR. All rights reserved.
+          <p className="text-xs font-normal text-slate-500 tracking-wide">
+            © {new Date().getFullYear()} DineQR. All rights reserved.
           </p>
+
+          <p className="text-xs font-normal text-slate-400 tracking-wide">
+            Designed & Developed by <span className="text-orange-500 font-semibold">Ashish Rathi</span>
+          </p>
+
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+            <span className="text-xs font-normal text-slate-500 uppercase tracking-widest">
               Systems Operational
             </span>
           </div>

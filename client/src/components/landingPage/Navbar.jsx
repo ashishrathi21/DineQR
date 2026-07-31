@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import DineQR_Logo from '../../assets/DineQR_Logo.png';
 
 const Navbar = () => {
@@ -7,7 +8,7 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1">
-        <div className="flex justify-between items-center h-20"> {/* Height badha di taaki bada logo fit ho sake */}
+        <div className="flex justify-between items-center h-15"> {/* Height badha di taaki bada logo fit ho sake */}
           
           {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center">
@@ -16,7 +17,7 @@ const Navbar = () => {
               <img 
                 src={DineQR_Logo} 
                 alt="DineQR Logo" 
-                className="h-18 w-auto object-contain transition-transform duration-300 hover:scale-105" 
+                className="h-15 w-auto object-contain transition-transform duration-300 hover:scale-105" 
               />
             </a>
           </div>
@@ -26,8 +27,7 @@ const Navbar = () => {
             <a href="#hero" className="text-gray-600 font-semibold hover:text-orange-500 transition duration-300 cursor-pointer">Home</a>
             <a href="#features" className="text-gray-600 font-semibold hover:text-orange-500 transition duration-300 cursor-pointer">Features</a>
             <a href="#pricing" className="text-gray-600 font-semibold hover:text-orange-500 transition duration-300 cursor-pointer">Pricing</a>
-            {/* Contact Us: No Background, Just Text Color Change */}
-            <a href="#contact" className="text-orange-500 font-bold hover:text-orange-600 transition duration-300 cursor-pointer">Contact Us</a>
+            <Link to="/auth" className="text-orange-500 font-semibold hover:text-orange-600 transition duration-300 cursor-pointer">Register Restaurent</Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -54,7 +54,7 @@ const Navbar = () => {
           <a href="#hero" className="block py-3 text-base font-medium text-gray-700 hover:text-orange-500">Home</a>
           <a href="#features" className="block py-3 text-base font-medium text-gray-700 hover:text-orange-500">Features</a>
           <a href="#pricing" className="block py-3 text-base font-medium text-gray-700 hover:text-orange-500">Pricing</a>
-          <a href="#contact" className="block py-3 text-base font-bold text-orange-500">Contact Us</a>
+          <Link to="/auth" className="text-orange-500 font-semibold hover:text-orange-600 transition duration-300 cursor-pointer">Register Restaurent</Link>
         </div>
       </div>
     </nav>

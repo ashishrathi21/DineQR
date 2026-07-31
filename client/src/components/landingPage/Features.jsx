@@ -14,14 +14,14 @@ const Features = () => {
   return (
     <section id='features' className="py-24 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
-        <h2 className="text-orange-500 font-bold tracking-widest uppercase text-xs mb-3">Premium Features</h2>
-        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">Everything to grow your restaurant</h1>
+        <h2 className="text-orange-500 font-semibold tracking-widest text-xs mb-3">Premium Features</h2>
+        <h1 className="text-4xl md:text-5xl font-semibold text-slate-900 tracking-tight">Everything to grow your restaurant</h1>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {featuresList.map((f, i) => (
-          <div key={i} className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300">
+          <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300">
             <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mb-6">{f.icon}</div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">{f.title}</h3>
+            <h3 className="text-xl font-semibold text-slate-900 mb-3">{f.title}</h3>
             <p className="text-slate-500 leading-relaxed text-sm">{f.description}</p>
           </div>
         ))}

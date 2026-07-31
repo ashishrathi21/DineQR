@@ -33,10 +33,10 @@ const Pricing = () => {
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <h2 className="text-orange-500 font-bold tracking-widest uppercase text-xs mb-3">
+          <h2 className="text-orange-500 font-semibold tracking-widest  text-xs mb-3">
             Pricing Plans
           </h2>
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-semibold text-slate-900 mb-6 tracking-tight">
             Simple Pricing for Restaurants
           </h1>
           <p className="text-lg text-slate-600 font-normal">
@@ -49,7 +49,7 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <div 
               key={index}
-              className={`relative p-8 rounded-[2.5rem] transition-all duration-300 hover:shadow-xl ${
+              className={`relative p-8 rounded-2xl transition-all duration-300 hover:shadow-xl ${
                 plan.highlight 
                 ? "bg-slate-950 text-white border-2 border-orange-500 scale-105 z-10" 
                 : "bg-white text-slate-900 border border-slate-200 shadow-sm"
@@ -62,7 +62,7 @@ const Pricing = () => {
               )}
 
               <div className="mb-8">
-                <h3 className={`text-xl font-bold mb-2 ${plan.highlight ? "text-orange-400" : "text-slate-900"}`}>
+                <h3 className={`text-xl font-semibold mb-2 ${plan.highlight ? "text-orange-400" : "text-slate-900"}`}>
                   {plan.name}
                 </h3>
                 <p className={`text-sm ${plan.highlight ? "text-slate-400" : "text-slate-500"}`}>
@@ -71,7 +71,7 @@ const Pricing = () => {
               </div>
 
               <div className="mb-8 flex items-baseline">
-                <span className="text-4xl font-bold">₹{plan.price}</span>
+                <span className="text-4xl font-semibold">₹{plan.price}</span>
                 <span className={`ml-2 text-sm font-medium ${plan.highlight ? "text-slate-500" : "text-slate-400"}`}>
                   /month
                 </span>
@@ -79,14 +79,14 @@ const Pricing = () => {
 
               <ul className="space-y-4 mb-10">
                 {plan.features.map((feature, fIndex) => (
-                  <li key={fIndex} className="flex items-center text-sm font-medium">
+                  <li key={fIndex} className="flex items-center text-sm font-normal">
                     <Check size={16} className="text-orange-500 mr-3 shrink-0" />
                     {feature}
                   </li>
                 ))}
               </ul>
 
-              <button className={`w-full py-4 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
+              <button className={`w-full py-4 rounded-lg font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
                 plan.highlight 
                 ? "bg-orange-500 text-white hover:bg-orange-600 shadow-lg shadow-orange-500/20" 
                 : "bg-slate-100 text-slate-900 hover:bg-slate-200"

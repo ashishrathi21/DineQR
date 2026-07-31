@@ -21,13 +21,13 @@ const Hero = () => {
 
           {/* Left Side: Content */}
           <div className="text-center lg:text-left lg:col-span-6 z-10">
-            <div className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold tracking-wide bg-orange-50 text-orange-600 mb-6 border border-orange-100 shadow-sm uppercase">
+            <div className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide bg-orange-50 text-orange-600 mb-6 border border-orange-100 shadow-sm">
               <Zap size={14} className="mr-2 fill-orange-500" />
               <span>Smart QR System</span>
             </div>
 
             {/* Adjusted Headline: Added leading-tight for proper multi-line spacing */}
-            <h1 className="relative text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tight">
+            <h1 className="relative text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-semibold text-slate-900 leading-[1.1] tracking-tight">
               Transform Your <br />
               <span className="text-orange-500">Dining Experience</span><br />
               <span className="inline-block mt-1">With QR Ordering</span>
@@ -38,9 +38,9 @@ const Hero = () => {
               Eliminate wait times. Let your customers <span className="text-slate-900 font-semibold underline decoration-orange-400 decoration-2 italic">scan, browse, and pay</span> in seconds.
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+            <div className="mt-8 flex flex-col items-center sm:flex-row justify-center lg:justify-start gap-4 ">
               <Link to='/auth'>
-                <button className="group flex items-center justify-center px-8 py-3.5 text-base font-semibold rounded-2xl text-white bg-slate-950 hover:bg-orange-600 transition-all duration-300 shadow-xl">
+                <button className="cursor-pointer group flex items-center justify-center px-8 py-3.5 text-base font-semibold rounded-xl text-white bg-slate-950 hover:bg-orange-600 transition-all duration-300 shadow-xl">
                   Get Started Free
                   <ChevronRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </button> </Link>
@@ -50,7 +50,7 @@ const Hero = () => {
           {/* Right Side: Mockup (Remains Exactly Same) */}
           <div className="mt-12 lg:mt-0 lg:col-span-6 relative flex justify-center scale-[0.85] lg:scale-90 xl:scale-100 origin-center">
 
-            <div className="absolute -top-10 left-0 md:-left-12 bg-white/80 backdrop-blur-md p-3 rounded-[1.5rem] shadow-2xl animate-[bounce_4s_ease-in-out_infinite] z-30 border border-white/50">
+            <div className="absolute -top-0 left-0 md:-left-0 bg-white/80 backdrop-blur-md p-3 rounded-[1.5rem] shadow-2xl animate-[bounce_4s_ease-in-out_infinite] z-30 border border-white/50">
               <img src={Pizza} alt="Pizza" className="w-16 h-16 md:w-20 md:h-20 object-contain" />
             </div>
             <div className="absolute top-1/4 -right-8 md:-right-12 bg-white/80 backdrop-blur-md p-3 rounded-[1.5rem] shadow-2xl animate-[bounce_5s_ease-in-out_infinite] z-30 border border-white/50">
@@ -64,7 +64,7 @@ const Hero = () => {
               <div className="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-3xl z-50"></div>
 
               <div className="relative h-full w-full bg-[#0a0a0a] flex flex-col pt-14 px-5 text-center">
-                <span className="text-[9px] text-orange-500/80 font-bold tracking-[0.3em] uppercase mb-4">DineQR System</span>
+                <span className="text-[10px] text-orange-500/80 font-semibold tracking-wider  mb-4">DineQR System</span>
 
                 <div className="relative flex-grow flex items-center justify-center">
                   <div className="absolute inset-0 m-2 border-2 border-transparent">
