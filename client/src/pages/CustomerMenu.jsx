@@ -206,7 +206,7 @@ const CustomerMenu = () => {
           <div className="border-t border-slate-100 pt-3 flex justify-between items-center">
             <div>
               <span className="font-bold text-slate-900 block text-xs">Total Amount</span>
-              <span className="text-[10px] text-slate-400 font-medium">Pay at Counter / Server</span>
+              <span className="text-[10px] text-slate-400 font-medium">Pay at Counter</span>
             </div>
             <span className="font-bold text-orange-600 text-lg">₹{orderPlaced.totalAmount}</span>
           </div>
@@ -480,7 +480,7 @@ const CustomerMenu = () => {
                   <div className="flex items-center gap-3">
                     <UtensilsCrossed size={18} className="text-orange-600" />
                     <div>
-                      <p className="font-semibold text-slate-900 text-xs">Pay at Counter / Server</p>
+                      <p className="font-semibold text-slate-900 text-xs">Pay at Counter</p>
                       <p className="text-[11px] text-slate-500">Pay when food arrives at your table</p>
                     </div>
                   </div>

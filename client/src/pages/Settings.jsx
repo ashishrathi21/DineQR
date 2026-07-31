@@ -253,7 +253,7 @@ const Settings = () => {
                         </div>
 
                         {/* Logo Preview Card */}
-                        <div className="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs flex flex-col items-center justify-center text-center h-fit">
+                        <div className="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs flex flex-col items-center justify-center text-center h-full">
                             <div className="w-24 h-24 rounded-xl bg-slate-100 border border-slate-200/80 flex items-center justify-center overflow-hidden mb-4 shadow-xs">
                                 {restaurant.logo ? (
                                     <img src={restaurant.logo} alt="Restaurant Logo" className="w-full h-full object-cover" />
@@ -264,6 +264,7 @@ const Settings = () => {
                             <h3 className="font-bold text-slate-900 text-sm">{restaurant.name || "Restaurant Logo"}</h3>
                             <p className="text-[11px] font-semibold text-orange-600 mt-0.5 uppercase tracking-wider">{restaurant.subscriptionPlan} Plan</p>
                             <p className="text-slate-500 text-xs mt-2 font-medium px-2">{restaurant.location || "Setup your restaurant identity"}</p>
+                            <p className="text-slate-500 text-xs mt-2 font-medium px-2">{restaurant.phone || "Setup your restaurant identity"}</p>
                         </div>
                     </div>
 

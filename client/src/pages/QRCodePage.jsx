@@ -33,24 +33,30 @@ const QRCodePage = () => {
 
       img.onload = () => {
         canvas.width = img.width + 100;
-        canvas.height = img.height + 150;
+        canvas.height = img.height + 200;
         
         // Draw background
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Draw QR Code
-        ctx.drawImage(img, 50, 50);
+        // Draw Header Text above QR Code
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "bold 20px Inter, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("Scan To See Our Menu", canvas.width / 2, 45);
         
-        // Draw Text
+        // Draw QR Code
+        ctx.drawImage(img, 50, 65);
+        
+        // Draw Restaurant Name & Table Text below QR Code
         ctx.fillStyle = "#0f172a";
         ctx.font = "bold 24px Inter, sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText(restaurantName, canvas.width / 2, img.height + 80);
+        ctx.fillText(restaurantName, canvas.width / 2, img.height + 115);
         
         ctx.fillStyle = "#f97316";
         ctx.font = "bold 32px Inter, sans-serif";
-        ctx.fillText(`TABLE ${selectedTable || 'N/A'}`, canvas.width / 2, img.height + 125);
+        ctx.fillText(`TABLE ${selectedTable || 'N/A'}`, canvas.width / 2, img.height + 165);
         
         const pngFile = canvas.toDataURL("image/png");
         const downloadLink = document.createElement("a");
@@ -89,6 +95,7 @@ const QRCodePage = () => {
       <div className="flex flex-col md:flex-row gap-6 items-start">
         {/* QR Code Card */}
         <div className="bg-white rounded-xl p-6 border border-slate-200/80 shadow-xs flex flex-col items-center justify-center w-full md:w-auto min-w-[320px]">
+        <h2 className="text-md font-semibold text-slate-900 tracking-tight text-center pb-5">Scan To See Our Menu :</h2>
             <div className="p-3 bg-white rounded-lg border border-slate-200/80 mb-5 shadow-xs">
                <QRCodeSVG 
                  id="qr-code-svg"
