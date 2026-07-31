@@ -1,6 +1,43 @@
 import Restaurant from "../models/restaurantModel.js";
 import Order from "../models/orderModel.js";
 
+// @desc    Get public restaurant info for QR customer menu
+// @route   GET /api/restaurant/public/:id
+// @access  Public
+export const getPublicRestaurantProfile = async (req, res) => {
+    try {
+        const restaurantId = req.params.id;
+
+        let restaurant = null;
+
+        // 1. Try finding by restaurant _id
+        if (restaurantId && restaurantId.match(/^[0-9a-fA-F]{24}$/)) {
+            restaurant = await Restaurant.findById(restaurantId).select("name logo location");
+            // 2. Try finding by ownerId
+            if (!restaurant) {
+                restaurant = await Restaurant.findOne({ ownerId: restaurantId }).select("name logo location");
+            }
+        }
+
+        // 3. Fallback: If not found by provided ID, return the 1st available restaurant from database
+        if (!restaurant) {
+            restaurant = await Restaurant.findOne().select("name logo location");
+        }
+
+        if (!restaurant) {
+            return res.status(404).json({ message: "Restaurant not found" });
+        }
+
+        res.status(200).json({
+            restaurantName: restaurant.name,
+            logo: restaurant.logo,
+            location: restaurant.location
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 // @desc    Get restaurant profile
 // @route   GET /api/restaurant/profile
 // @access  Private
@@ -75,18 +112,14 @@ export const getRestaurantAnalytics = async (req, res) => {
             return res.status(400).json({ success: false, message: "Restaurant ID is required" });
         }
 
-        // Fetch all orders for analytics calculation
         const orders = await Order.find({ restaurantId });
 
-        // KPIs Calculations
         const totalOrders = orders.length;
         const totalRevenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
         
-        // Count distinct tables that placed orders
         const uniqueTables = new Set(orders.map(o => o.tableNumber));
         const customerCount = uniqueTables.size;
 
-        // Calculate average prep time for ready/completed orders (in minutes)
         const completedOrders = orders.filter(o => ["ready", "completed"].includes(o.status));
         let totalPrepMinutes = 0;
         let completedCount = 0;
@@ -98,9 +131,8 @@ export const getRestaurantAnalytics = async (req, res) => {
             completedCount++;
         });
 
-        const avgPrepTime = completedCount > 0 ? Math.round(totalPrepMinutes / completedCount) : 15; // default to 15m if no completed orders yet
+        const avgPrepTime = completedCount > 0 ? Math.round(totalPrepMinutes / completedCount) : 15;
 
-        // Fetch top 5 recent orders
         const recentOrders = await Order.find({ restaurantId })
             .sort({ createdAt: -1 })
             .limit(5);

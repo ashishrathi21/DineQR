@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import  logo  from "../assets/DineQR_Logo.png"
+import  logo  from "../assets/dashboard_logo.png"
+import  small_logo  from "../assets/only_logo.png"
 import { useAuthStore } from '../store/useAuthStore';
 import { LayoutDashboard, UtensilsCrossed, QrCode, LogOut, Clock, Settings, Menu, X } from 'lucide-react';
 
@@ -47,8 +48,7 @@ const DashboardLayout = () => {
       <div className="p-5 border-b border-slate-100 flex justify-between items-center">
         <div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
-            <img src={logo} alt="logo" width={25} height={25} className='h-10 w-auto' />
-            Dine<span className="text-orange-500">QR</span>
+            <img src={logo} alt="logo" width={25} height={25} className='h-8  w-auto' />
           </h1>
           
         </div>
@@ -108,8 +108,7 @@ const DashboardLayout = () => {
       {/* Mobile Header */}
       <header className="md:hidden bg-white border-b border-slate-200/80 px-5 py-3.5 flex justify-between items-center sticky top-0 z-30 shadow-xs">
         <h1 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
-          <span className="w-6 h-6 bg-orange-500 rounded-md flex items-center justify-center text-white text-xs font-black">D</span>
-          Dine<span className="text-orange-500">QR</span>
+          <img src={small_logo} alt="logo" width={20} height={20} className='h-8 w-auto' />
         </h1>
         <button onClick={() => setMobileOpen(true)} className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100 border border-slate-200/60">
           <Menu size={20} />

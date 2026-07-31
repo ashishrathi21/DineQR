@@ -1,5 +1,16 @@
 import Category from "../models/categoryModel.js";
 import MenuItem from "../models/menuItemModel.js";
+import Restaurant from "../models/restaurantModel.js";
+
+// Helper to resolve valid restaurantId from query, user session, or database fallback
+const resolveRestaurantId = async (queryId, userId) => {
+    let targetId = queryId || userId;
+    if (!targetId || targetId === 'undefined' || targetId === 'null') {
+        const firstRest = await Restaurant.findOne();
+        if (firstRest) targetId = firstRest._id;
+    }
+    return targetId;
+};
 
 // --- Category Controllers ---
 
@@ -19,11 +30,11 @@ export const createCategory = async (req, res) => {
 
 export const getCategories = async (req, res) => {
     try {
-        // Support fetching based on auth user OR explicit restaurantId in query 
-        // (for public menu view)
-        const restaurantId = req.query.restaurantId || req.user?.restaurantId;
+        const restaurantId = await resolveRestaurantId(req.query.restaurantId, req.user?.restaurantId);
 
-        if (!restaurantId) return res.status(400).json({ success: false, message: "Restaurant ID is required" });
+        if (!restaurantId) {
+            return res.status(200).json({ success: true, categories: [] });
+        }
 
         const categories = await Category.find({ restaurantId });
         res.status(200).json({ success: true, categories });
@@ -46,7 +57,7 @@ export const deleteCategory = async (req, res) => {
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
-}
+};
 
 
 // --- MenuItem Controllers ---
@@ -79,9 +90,11 @@ export const createMenuItem = async (req, res) => {
 
 export const getMenuItems = async (req, res) => {
     try {
-        const restaurantId = req.query.restaurantId || req.user?.restaurantId;
+        const restaurantId = await resolveRestaurantId(req.query.restaurantId, req.user?.restaurantId);
 
-        if (!restaurantId) return res.status(400).json({ success: false, message: "Restaurant ID is required" });
+        if (!restaurantId) {
+            return res.status(200).json({ success: true, menuItems: [] });
+        }
 
         const menuItems = await MenuItem.find({ restaurantId }).populate("categoryId", "name");
         res.status(200).json({ success: true, menuItems });
@@ -93,15 +106,15 @@ export const getMenuItems = async (req, res) => {
 export const updateMenuItem = async (req, res) => {
     try {
         const { id } = req.params;
-        const updates = req.body;
+        const { name, price, description, image, categoryId, isVeg, isAvailable } = req.body;
 
         const menuItem = await MenuItem.findOneAndUpdate(
             { _id: id, restaurantId: req.user.restaurantId },
-            updates,
-            { new: true }
+            { name, price: Number(price), description, image, categoryId, isVeg, isAvailable },
+            { new: true, runValidators: true }
         );
 
-        if (!menuItem) return res.status(404).json({ success: false, message: "Item not found or unauthorized" });
+        if (!menuItem) return res.status(404).json({ success: false, message: "Menu item not found or unauthorized" });
 
         res.status(200).json({ success: true, menuItem });
     } catch (error) {
@@ -113,10 +126,10 @@ export const deleteMenuItem = async (req, res) => {
     try {
         const { id } = req.params;
         const menuItem = await MenuItem.findOneAndDelete({ _id: id, restaurantId: req.user.restaurantId });
-        
-        if (!menuItem) return res.status(404).json({ success: false, message: "Item not found or unauthorized" });
 
-        res.status(200).json({ success: true, message: "Item deleted" });
+        if (!menuItem) return res.status(404).json({ success: false, message: "Menu item not found or unauthorized" });
+
+        res.status(200).json({ success: true, message: "Menu item deleted" });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
