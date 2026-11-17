@@ -83,7 +83,7 @@ const Overview = () => {
                 {data.recentOrders.map((order) => {
                   const date = new Date(order.createdAt);
                   const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                  
+
                   return (
                     <tr key={order._id} className="hover:bg-slate-50/80 transition-colors text-xs font-medium text-slate-700">
                       <td className="py-3.5 px-4 font-semibold text-slate-900">Table {order.tableNumber}</td>
@@ -93,12 +93,11 @@ const Overview = () => {
                       <td className="py-3.5 px-4 text-slate-500">{time}</td>
                       <td className="py-3.5 px-4 font-semibold text-slate-900">₹{order.totalAmount}</td>
                       <td className="py-3.5 px-4 text-right">
-                        <span className={`inline-flex px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider ${
-                          order.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200/80' :
-                          order.status === 'preparing' ? 'bg-orange-50 text-orange-700 border border-orange-200/80' :
-                          order.status === 'ready' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/80' :
-                          'bg-slate-100 text-slate-600 border border-slate-200/80'
-                        }`}>
+                        <span className={`inline-flex px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider ${order.status === 'pending' ? 'bg-amber-50 text-amber-700 border border-amber-200/80' :
+                            order.status === 'preparing' ? 'bg-orange-50 text-orange-700 border border-orange-200/80' :
+                              order.status === 'ready' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/80' :
+                                'bg-slate-100 text-slate-600 border border-slate-200/80'
+                          }`}>
                           {order.status}
                         </span>
                       </td>
@@ -127,9 +126,7 @@ const StatCard = ({ icon, label, value, trend, color }) => (
     <div>
       <p className="text-slate-500 font-semibold text-xs mb-1 uppercase tracking-wider">{label}</p>
       <h3 className="text-2xl font-bold text-slate-900 tracking-tight">{value}</h3>
-      <p className="text-emerald-600 text-[11px] font-semibold mt-2 flex items-center gap-1">
-        {trend} <span className="text-slate-400 font-normal ml-0.5">vs yesterday</span>
-      </p>
+      
     </div>
     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${color} shrink-0`}>
       {icon}
